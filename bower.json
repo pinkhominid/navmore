@@ -1,0 +1,22 @@
+{
+  "name": "navmore",
+  "version": "1.0.0",
+  "authors": [
+    "pinkhominid <pinkhominid@birdbomb.com>"
+  ],
+  "description": "A navigation list decorator that produces a responsive horizontal nav menu.",
+  "keywords": [
+    "web",
+    "javascript",
+    "navigation",
+    "menu",
+    "responsive"
+  ],
+  "main": "navmore.js",
+  "license": "https://raw.githubusercontent.com/pinkhominid/navmore/master/LICENSE",
+  "homepage": "https://github.com/pinkhominid/navmore",
+  "ignore": [
+    "/.*",
+    "/index.html"
+  ]
+}

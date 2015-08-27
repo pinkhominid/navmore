@@ -1,0 +1,99 @@
+/**
+ * @license
+ * NavMore <https://github.com/pinkhominid/navmore>
+ * A navigation list decorator that produces a responsive horizontal nav menu.
+ * Written with ES5 and CSS3. No dependencies.
+ *
+ * MIT License <https://raw.githubusercontent.com/pinkhominid/navmore/master/LICENSE>
+ *
+ * Chrome/Safari/Firefox/IE10+
+ */
+
+.navmore ul {
+  margin: 0;
+  padding: 0;
+}
+.navmore > ul {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  max-width: 1000px;
+}
+.navmore ul li {
+  list-style: none;
+  text-align: center;
+  min-width: 0; /* needed for firefox overflow to trigger */
+}
+.navmore > ul > li {
+  -webkit-box-flex: 1 1 auto;
+  -webkit-flex: 1 1 auto;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+}
+.navmore ul li a,
+.navmore ul li h1 {
+  outline: 0;
+  font-size: 1em;
+  font-weight: normal;
+  display: block;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+
+  line-height: 50px;
+  text-decoration: none;
+  -webkit-tap-highlight-color:rgba(0,0,0,0);
+
+  /* needed for links that don't have href attrs */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.navmore > ul > li > a,
+.navmore > ul > li > h1 {
+  padding: 0 20px;
+}
+.navmore ul li a:hover,
+.navmore ul li a.focused,
+.navmore ul li h1:hover,
+.navmore ul li h1.focused {
+  background-color: rgba(0, 0, 0, .05);
+}
+.navmore ul li a:active,
+.navmore ul li h1:active {
+  background-color: rgba(0, 0, 0, .1);
+}
+.navmore li > ul {
+  display: block;
+  position: absolute;
+  right: 0;
+  left: 0;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.26);
+  overflow: auto;
+  max-height: 0;
+  opacity: 0;
+  -webkit-transform: translate3d(0,0,0);
+  -webkit-transition: max-height 0.2s ease 0.1s, opacity 0.1s ease 0.1s;
+  transition: max-height 0.2s ease 0.1s, opacity 0.1s ease 0.1s;
+}
+.navmore li > ul li a,
+.navmore li > ul li h1 {
+  color: #212121;
+  text-overflow: ellipsis;
+}
+.navmore li a.focused ~ ul,
+.navmore li h1.focused ~ ul,
+.navmore .navmore-more-item ~ ul > li a.focused ~ ul {
+  max-height: 70vh;
+  opacity: 1;
+}
+.navmore li ul li ul {
+  position: static;
+  box-shadow: inset 0  4px 4px -4px rgba(0,0,0,0.26),
+    inset 0 -4px 4px -4px rgba(0,0,0,0.26);
+}
