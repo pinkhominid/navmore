@@ -34,17 +34,16 @@
         /* top-level nav items */
         .navmore > ul > li > a {
             color: #fff;
-            border-bottom: 4px solid transparent;
         }
-        .navmore > ul > li > a.selected {
-            border-bottom: 4px solid #ff9100;
+        .navmore > ul > li > a.selected:after {
+            background-color: orange;
         }
         /* nested nav items */
         .navmore li ul a {
             border-left: 4px solid transparent;
         }
         .navmore li ul a.selected {
-            border-left: 4px solid #ff9100;
+            border-left: 4px solid orange;
         }
     </style>
     <link rel="stylesheet" href="navmore.css">
@@ -54,7 +53,7 @@
         <h1>Hello World</h1>
     </header>
 
-    <nav id="nav1">
+    <nav id="nav1" class="flexgrow">
         <ul>
             <li><a href="#home">Home</a></li>
             <li><a href="#about">About</a></li>

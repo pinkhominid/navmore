@@ -14,6 +14,7 @@
  * navmore.destroy fn
  * improve animation
  * fit sub-list dropdown to window
+ * auto width sub-lists on wider screens
  * a way to denote items outside of viewport in sub-lists (e.g. gradients)
  */
 
@@ -22,7 +23,7 @@
 
   window.navmore = function (nav) {
     var mainList = nav.querySelector('ul');
-    var moreItem = createElementFromString('<li><a class="navmore-more-item" href="javascript:void(0)">More...</a><ul></ul></li>');
+    var moreItem = createElementFromString('<li class="hidden"><a class="navmore-more-item" href="javascript:void(0)">More...</a><ul></ul></li>');
     var moreList = moreItem.querySelector('ul');
     var navItemTagNames = 'A, H1'; // NOTE: css currently supports A, H1
 
@@ -43,6 +44,10 @@
     }
 
     /* BEHAVIORS */
+
+    function isFlex() {
+      return nav.classList.contains('flex') || nav.classList.contains('flexgrow');
+    }
 
     function isNavLeafItem(target) {
       // has href and not javascript:void(0)
@@ -94,21 +99,35 @@
       var lastMainItem = getLastMainItem(),
         firstMoreItem = getFirstMoreItem();
 
-      while (firstMoreItem && getAutoClientWidth(lastMainItem) <= lastMainItem.clientWidth) {
+      while (firstMoreItem && !isOverflowing(lastMainItem)) {
         mainList.insertBefore(firstMoreItem.parentElement, moreItem);
 
         lastMainItem = firstMoreItem;
         firstMoreItem = getFirstMoreItem();
       }
-      while (lastMainItem && getAutoClientWidth(lastMainItem) > lastMainItem.clientWidth) {
+      while (lastMainItem && isOverflowing(lastMainItem)) {
         moreList.insertBefore(lastMainItem.parentElement, moreList.firstElementChild);
 
         lastMainItem = getLastMainItem();
+        // update while adding to moreList in the case More item overflows list
+        updateMoreItemHidden();
       }
-      moreItem.style.display = (moreList.childElementCount > 0 ? 'block' : 'none');
+      updateMoreItemHidden();
       if (moreList.childElementCount > 0) {
         // refresh selected ancestors to mark moreItem if necessary
         forEachAncestorSiblingsByTagName(nav.querySelectorAll('.selected')[0], mainList, 'UL', navItemTagNames, selectItem);
+      }
+    }
+
+    function updateMoreItemHidden() {
+        moreItem.classList[moreList.childElementCount === 0 ? 'add' : 'remove']('hidden');
+    }
+
+    function isOverflowing(lastMainItem) {
+      if (isFlex()) {
+        return getAutoClientWidth(lastMainItem) > lastMainItem.clientWidth;
+      } else {
+        return mainList.scrollWidth > mainList.clientWidth;
       }
     }
 
@@ -188,7 +207,7 @@
       padLeft = parseInt(style.getPropertyValue('padding-left')),
       padRight = parseInt(style.getPropertyValue('padding-right'));
 
-    return getTextWidth(text, font.join(' ')) + padLeft + padRight;
+    return Math.round(getTextWidth(text, font.join(' ')) + padLeft + padRight);
   }
 
   // http://stackoverflow.com/a/21015393
