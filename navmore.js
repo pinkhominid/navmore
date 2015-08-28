@@ -26,6 +26,7 @@
     var moreItem = createElementFromString('<li class="hidden"><a class="navmore-more-item" href="javascript:void(0)">More...</a><ul></ul></li>');
     var moreList = moreItem.querySelector('ul');
     var navItemTagNames = 'A, H1'; // NOTE: css currently supports A, H1
+    var selected;
 
     function init() {
       mainList.appendChild(moreItem);
@@ -99,23 +100,26 @@
       var lastMainItem = getLastMainItem(),
         firstMoreItem = getFirstMoreItem();
 
+      // move items from moreList to mainList
       while (firstMoreItem && !isOverflowing(lastMainItem)) {
         mainList.insertBefore(firstMoreItem.parentElement, moreItem);
 
         lastMainItem = firstMoreItem;
         firstMoreItem = getFirstMoreItem();
       }
+      // move items from mainList to moreList
       while (lastMainItem && isOverflowing(lastMainItem)) {
         moreList.insertBefore(lastMainItem.parentElement, moreList.firstElementChild);
 
         lastMainItem = getLastMainItem();
-        // update while adding to moreList in the case More item overflows list
+        // update while adding to moreList in the case More item itself overflows the list
         updateMoreItemHidden();
       }
+      // updates
       updateMoreItemHidden();
-      if (moreList.childElementCount > 0) {
-        // refresh selected ancestors to mark moreItem if necessary
-        forEachAncestorSiblingsByTagName(nav.querySelectorAll('.selected')[0], mainList, 'UL', navItemTagNames, selectItem);
+      if (moreList.childElementCount > 0 && selected) {
+        // refresh selected
+        setSelectedItem(selected);
       }
     }
 
@@ -132,13 +136,18 @@
     }
 
     function setSelectedItem(item) {
-      if (item && hasTagName(item, navItemTagNames) && isNavLeafItem(item)) {
-        // clear selected for all navItems
-        forEachDescendantsByTagName(mainList, navItemTagNames, unselectItem);
-        // mark ancestor navItems as selected
-        forEachAncestorSiblingsByTagName(item, mainList, 'UL', navItemTagNames, selectItem);
+      // clear selected for all navItems
+      forEachDescendantsByTagName(mainList, navItemTagNames, unselectItem);
+
+      if (!item) {
+        selected = null;
+      } else if (item && hasTagName(item, navItemTagNames) && isNavLeafItem(item)) {
+        // store selected
+        selected = item;
         // mark navItem as selected
         selectItem(item);
+        // mark ancestor navItems as selected
+        forEachAncestorSiblingsByTagName(item, mainList, 'UL', navItemTagNames, selectItem);
       }
       return nav;
     }
@@ -288,10 +297,6 @@
 
   function selectItem(item) {
     item.classList.add('selected');
-  }
-
-  function isItemSelected(item) {
-    return item.classList.contains('selected');
   }
 
 })(window);
