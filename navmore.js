@@ -32,6 +32,7 @@
       mainList.appendChild(moreItem);
       nav.classList.add('navmore');
       nav.navmore = {
+        collapse: collapse,
         setSelected: setSelected
       };
 
@@ -137,6 +138,7 @@
       // clear focus for all navItems
       forEachDescendantsByTagName(mainList, navItemTagNames, blurItem);
     }
+
     function setSelected(item) {
       // clear selected for all navItems
       forEachDescendantsByTagName(mainList, navItemTagNames, unselectItem);
