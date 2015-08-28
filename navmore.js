@@ -32,7 +32,7 @@
       mainList.appendChild(moreItem);
       nav.classList.add('navmore');
       nav.navmore = {
-        setSelectedItem: setSelectedItem
+        setSelected: setSelected
       };
 
       throttle('resize', 'optimizedResize');
@@ -59,8 +59,7 @@
       // retarget tap to account for nested elements
       var target = retargetBubbleEventByTagName(e, mainList, navItemTagNames);
       if (!target) {
-        // clear focus for all navItems
-        forEachDescendantsByTagName(mainList, navItemTagNames, blurItem);
+        collapse();
         return;
       }
 
@@ -73,11 +72,10 @@
         return;
       }
 
-      // clear focus for all navItems
-      forEachDescendantsByTagName(mainList, navItemTagNames, blurItem);
+      collapse();
 
       if (isLeaf) {
-        setSelectedItem(target);
+        setSelected(target);
       } else { // is branch
         // focus ancestor navItems
         forEachAncestorSiblingsByTagName(target, mainList, 'UL', navItemTagNames, focusItem);
@@ -119,7 +117,7 @@
       updateMoreItemHidden();
       if (moreList.childElementCount > 0 && selected) {
         // refresh selected
-        setSelectedItem(selected);
+        setSelected(selected);
       }
     }
 
@@ -135,7 +133,11 @@
       }
     }
 
-    function setSelectedItem(item) {
+    function collapse() {
+      // clear focus for all navItems
+      forEachDescendantsByTagName(mainList, navItemTagNames, blurItem);
+    }
+    function setSelected(item) {
       // clear selected for all navItems
       forEachDescendantsByTagName(mainList, navItemTagNames, unselectItem);
 
@@ -149,6 +151,7 @@
         // mark ancestor navItems as selected
         forEachAncestorSiblingsByTagName(item, mainList, 'UL', navItemTagNames, selectItem);
       }
+
       return nav;
     }
 
