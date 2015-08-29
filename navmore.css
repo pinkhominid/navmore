@@ -33,6 +33,7 @@
   white-space: nowrap;
   overflow: hidden;
   line-height: 3;
+  cursor: pointer;
 
   text-decoration: none;
   -webkit-tap-highlight-color:rgba(0,0,0,0);

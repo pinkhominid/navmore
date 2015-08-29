@@ -210,7 +210,7 @@
   }
 
   function getAutoClientWidth(el) {
-    var text = el.text,
+    var text = el.textContent.trim(),
       style = window.getComputedStyle(el),
       /* get font values separately for firefox :( */
       font = [
