@@ -53,7 +53,7 @@
 
     function isNavLeafItem(target) {
       // has href and not javascript:void(0)
-      return target.href && target.href.startsWith('http');
+      return target.href && target.href.indexOf('http') === 0;
     }
 
     function handleTap(e) {
