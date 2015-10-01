@@ -94,12 +94,15 @@
     height: 3px;
 }
 /* child lists */
+.navmore > ul > li > ul {
+  background-color: #fff;
+  z-index: 1000;
+}
 .navmore li > ul {
   display: block;
   position: absolute;
   right: 0;
   left: 0;
-  background-color: #fff;
   box-shadow: 0 2px 5px rgba(0,0,0,0.26);
   overflow: auto;
   max-height: 0;
@@ -121,6 +124,44 @@
 }
 .navmore li ul li ul {
   position: static;
-  box-shadow: inset 0  4px 4px -4px rgba(0,0,0,0.26),
+  box-shadow: inset 0 4px 4px -4px rgba(0,0,0,0.26),
     inset 0 -4px 4px -4px rgba(0,0,0,0.26);
+}
+@media (min-width: 769px) {
+  .navmore li > ul {
+    left: auto;
+    right: auto;
+    min-width: 250px;
+  }
+  .navmore li ul a,
+  .navmore li ul h1 {
+    padding: 0 20px 0 50px;
+    text-align: left;
+  }
+  .navmore li ul li ul a,
+  .navmore li ul li ul h1 {
+    padding-left: 60px;
+  }
+  .navmore ul.navmore-flex {
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -ms-flex-flow: row wrap;
+    -webkit-flex-flow: row wrap;
+    flex-flow: row wrap;
+  }
+  .navmore ul.navmore-flex ul {
+    max-height: 70vh;
+    opacity: 1;
+    box-shadow: none;
+  }
+  .navmore ul.navmore-flex > li {
+    -ms-flex: 1 1 0;
+    -webkit-flex: 1 1 0;
+    flex: 1 1 0;
+    min-width: 250px;
+  }
+  .navmore ul.navmore-flex h1 {
+    cursor: default;
+  }
 }

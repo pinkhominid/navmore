@@ -10,7 +10,6 @@
  *
  * TODO
  * support keyboard navigation
- * test deeper nesting?
  * navmore.destroy fn
  * improve animation
  * fit sub-list dropdown to window
@@ -23,7 +22,7 @@
 
   window.navmore = function (nav) {
     var mainList = nav.querySelector('ul');
-    var moreItem = createElementFromString('<li class="hidden"><a class="navmore-more-item" href="javascript:void(0)">More...</a><ul></ul></li>');
+    var moreItem = createElementFromString('<li class="hidden"><a class="navmore-more-item" href="javascript:void(0)">More&hellip;</a><ul></ul></li>');
     var moreList = moreItem.querySelector('ul');
     var navItemTagNames = 'A, H1'; // NOTE: css currently supports A, H1
     var selected;
