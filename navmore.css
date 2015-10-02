@@ -10,6 +10,10 @@
  */
 
 /* all lists */
+.navmore,
+.navmore > ul {
+  display: block;
+}
 .navmore ul {
   margin: 0;
   padding: 0;
@@ -131,24 +135,14 @@
   .navmore li > ul {
     left: auto;
     right: auto;
-    min-width: 250px;
-  }
-  .navmore li ul a,
-  .navmore li ul h1 {
-    padding: 0 20px 0 50px;
-    text-align: left;
-  }
-  .navmore li ul li ul a,
-  .navmore li ul li ul h1 {
-    padding-left: 60px;
   }
   .navmore ul.navmore-flex {
     display: -ms-flexbox;
     display: -webkit-flex;
     display: flex;
-    -ms-flex-flow: row wrap;
-    -webkit-flex-flow: row wrap;
-    flex-flow: row wrap;
+    -ms-flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
   }
   .navmore ul.navmore-flex ul {
     max-height: 70vh;
@@ -159,7 +153,6 @@
     -ms-flex: 1 1 0;
     -webkit-flex: 1 1 0;
     flex: 1 1 0;
-    min-width: 250px;
   }
   .navmore ul.navmore-flex h1 {
     cursor: default;
