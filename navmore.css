@@ -150,9 +150,9 @@
     box-shadow: none;
   }
   .navmore ul.navmore-flex > li {
-    -ms-flex: 1 1 0;
-    -webkit-flex: 1 1 0;
-    flex: 1 1 0;
+    -ms-flex: 0 1 auto;
+    -webkit-flex: 0 1 auto;
+    flex: 0 1 auto;
   }
   .navmore ul.navmore-flex h1 {
     cursor: default;
