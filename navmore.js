@@ -99,7 +99,7 @@
         firstMoreItem = getFirstMoreItem();
 
       // move items from moreList to mainList
-      while (firstMoreItem && !isOverflowing(lastMainItem)) {
+      while (firstMoreItem && (!lastMainItem || !isOverflowing(lastMainItem))) {
         mainList.insertBefore(firstMoreItem.parentElement, moreItem);
 
         lastMainItem = firstMoreItem;
@@ -127,7 +127,7 @@
 
     function isOverflowing(lastMainItem) {
       if (isFlex()) {
-        return getAutoClientWidth(lastMainItem) > lastMainItem.clientWidth;
+        return getAutoClientWidth(lastMainItem) >= lastMainItem.clientWidth;
       } else {
         return mainList.scrollWidth > mainList.clientWidth;
       }
