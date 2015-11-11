@@ -9,11 +9,11 @@
  * Chrome/Safari/Firefox/IE10+
  *
  * TODO
+ * fix msie
  * support keyboard navigation
- * navmore.destroy fn
+ * support other nav item tags
  * improve animation
- * fit sub-list dropdown to window
- * auto width sub-lists on wider screens
+ * calc'ed height of droplist
  * a way to denote items outside of viewport in sub-lists (e.g. gradients)
  */
 
@@ -22,22 +22,26 @@
 
   window.navmore = function (nav) {
     var mainList = nav.querySelector('ul');
-    var moreItem = createElementFromString('<li class="hidden"><a class="navmore-more-item" href="javascript:void(0)">More&hellip;</a><ul></ul></li>');
+    var moreItem = createElementFromString('<li class="hidden"><a class="navmore-moreitem" href="javascript:void(0)">More&hellip;</a><ul></ul></li>');
     var moreList = moreItem.querySelector('ul');
     var navItemTagNames = 'A, H1'; // NOTE: css currently supports A, H1
     var selected;
+    var unthrottleResize;
 
     function init() {
       mainList.appendChild(moreItem);
       nav.classList.add('navmore');
+
       nav.navmore = {
         collapse: collapse,
-        setSelected: setSelected
+        getSelected: getSelected,
+        setSelected: setSelected,
+        destroy: destroy
       };
 
-      throttle('resize', 'optimizedResize');
-
-      window.addEventListener('optimizedResize', reorgNav);
+      // listeners
+      unthrottleResize = throttle('resize', 'optimizedResize');
+      window.addEventListener('optimizedResize', reorgNav, false);
       window.addEventListener('click', handleTap, false);
 
       /* bootstrap */
@@ -140,7 +144,7 @@
 
     function setSelected(item) {
       // clear selected for all navItems
-      forEachDescendantsByTagName(mainList, navItemTagNames, unselectItem);
+      forEachDescendantsByTagName(mainList, navItemTagNames, deselectItem);
 
       if (!item) {
         selected = null;
@@ -156,6 +160,22 @@
       return nav;
     }
 
+    /* returns array of selected items ordered from leaf (bottom) to root (top) */
+    function getSelected() {
+      return Array.prototype.slice.call(mainList.querySelectorAll('.selected')).reverse();
+    }
+
+    function destroy() {
+      mainList.removeChild(moreItem);
+      nav.classList.remove('navmore');
+
+      delete nav.navmore;
+
+      unthrottleResize();
+      window.removeEventListener('optimizedResize', reorgNav, false);
+      window.removeEventListener('click', handleTap, false);
+    }
+
     /* BOOTSTRAP */
     init();
 
@@ -164,7 +184,8 @@
 
   /* UTILS */
 
-  // from MDN
+  // from MDN with modifications
+  // https://developer.mozilla.org/en-US/docs/Web/Events/resize
   function throttle(type, name, obj) {
     obj = obj || window;
     var running = false;
@@ -176,19 +197,11 @@
         running = false;
       });
     };
-    obj.addEventListener(type, func);
-  }
-
-  // simple debounce
-  // http://stackoverflow.com/questions/20695334/is-this-a-simple-debounce-function-in-javascript
-  function debounce(fn, delay){
-    var timeoutId;
-    return function () {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-      timeoutId = setTimeout(fn.bind(this), delay);
+    var removeFunc = function() {
+      obj.removeEventListener(type, func);
     };
+    obj.addEventListener(type, func, false);
+    return removeFunc;
   }
 
   // MDN
@@ -283,10 +296,6 @@
     } while (startNode);
   }
 
-  function blurItem(item) {
-    item.classList.remove('focused');
-  }
-
   function focusItem(item) {
     item.classList.add('focused');
   }
@@ -295,12 +304,16 @@
     return item.classList.contains('focused');
   }
 
-  function unselectItem(item) {
-    item.classList.remove('selected');
+  function blurItem(item) {
+    item.classList.remove('focused');
   }
 
   function selectItem(item) {
     item.classList.add('selected');
+  }
+
+  function deselectItem(item) {
+    item.classList.remove('selected');
   }
 
 })(window);

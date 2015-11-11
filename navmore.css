@@ -61,24 +61,22 @@
   background-color: rgba(0, 0, 0, .1);
 }
 /* root list */
-.navmore:not(.flex) > ul,
-.navmore:not(.flexgrow) > ul {
+.navmore:not(.navmore-flex) > ul,
+.navmore:not(.navmore-flexgrow) > ul {
   white-space: nowrap;
   overflow: hidden;
 }
-.navmore:not(.flex) > ul > li,
-.navmore:not(.flexgrow) > ul > li {
+.navmore:not(.navmore-flex) > ul > li,
+.navmore:not(.navmore-flexgrow) > ul > li {
   display: inline-block;
 }
-.navmore.flex > ul,
-.navmore.flexgrow > ul {
-  display: -webkit-box;
+.navmore.navmore-flex > ul,
+.navmore.navmore-flexgrow > ul {
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex;
 }
-.navmore.flexgrow > ul > li {
-  -webkit-box-flex: 1 1 auto;
+.navmore.navmore-flexgrow > ul > li {
   -webkit-flex: 1 1 auto;
   -ms-flex: 1 1 auto;
   flex: 1 1 auto;
@@ -97,7 +95,7 @@
     right: 0;
     height: 3px;
 }
-/* child lists */
+/* sublists */
 .navmore > ul > li > ul {
   background-color: #fff;
   z-index: 1000;
@@ -122,7 +120,7 @@
 }
 .navmore li a.focused ~ ul,
 .navmore li h1.focused ~ ul,
-.navmore .navmore-more-item ~ ul > li a.focused ~ ul {
+.navmore .navmore-moreitem ~ ul > li a.focused ~ ul {
   max-height: 70vh;
   opacity: 1;
 }
@@ -132,11 +130,12 @@
     inset 0 -4px 4px -4px rgba(0,0,0,0.26);
 }
 @media (min-width: 769px) {
+  /* sublists */
   .navmore li > ul {
     left: auto;
     right: auto;
   }
-  .navmore ul.navmore-flex {
+  .navmore li ul.navmore-flex {
     display: -ms-flexbox;
     display: -webkit-flex;
     display: flex;
@@ -144,17 +143,17 @@
     -webkit-flex-wrap: wrap;
     flex-wrap: wrap;
   }
-  .navmore ul.navmore-flex ul {
+  .navmore li ul.navmore-flex ul {
     max-height: 70vh;
     opacity: 1;
     box-shadow: none;
   }
-  .navmore ul.navmore-flex > li {
+  .navmore li ul.navmore-flex > li {
     -ms-flex: 0 1 auto;
     -webkit-flex: 0 1 auto;
     flex: 0 1 auto;
   }
-  .navmore ul.navmore-flex h1 {
+  .navmore li ul.navmore-flex h1 {
     cursor: default;
   }
 }
