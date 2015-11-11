@@ -4,14 +4,15 @@
  * A navigation list decorator that produces a responsive horizontal nav menu.
  * Written with ES5 and CSS3. No dependencies.
  *
- * MIT License <https://raw.githubusercontent.com/pinkhominid/navmore/master/LICENSE>
+ * Copyright pinkhominid
+ * Released under MIT License <https://raw.githubusercontent.com/pinkhominid/navmore/master/LICENSE>
  *
  * Chrome/Safari/Firefox/IE10+
  *
  * TODO
  * fix msie
  * support keyboard navigation
- * support other nav item tags
+ * support more nav item tags
  * improve animation
  * calc'ed height of droplist
  * a way to denote items outside of viewport in sub-lists (e.g. gradients)
@@ -20,7 +21,7 @@
 ;(function(window) {
   var document = window.document;
 
-  window.navmore = function (nav) {
+  window.navmore = function(nav) {
     var mainList = nav.querySelector('ul');
     var moreItem = createElementFromString('<li class="hidden"><a class="navmore-moreitem" href="javascript:void(0)">More&hellip;</a><ul></ul></li>');
     var moreList = moreItem.querySelector('ul');
@@ -32,11 +33,14 @@
       mainList.appendChild(moreItem);
       nav.classList.add('navmore');
 
+      // Public API
       nav.navmore = {
-        collapse: collapse,
-        getSelected: getSelected,
-        setSelected: setSelected,
-        destroy: destroy
+        reset: reorgNav, // recalc/rerender nav items
+        collapse: collapse, // collapse dropped menus
+        getSelected: getSelected, // get selected hierarchy as array [leaf, ..., root]
+        setSelected: setSelected, // set selected leaf item then update hierarchy
+        setMoreItemText: setMoreItemText, // update the text for the more item
+        destroy: destroy // cleanup all traces of navmore
       };
 
       // listeners
@@ -51,7 +55,7 @@
     /* BEHAVIORS */
 
     function isFlex() {
-      return nav.classList.contains('flex') || nav.classList.contains('flexgrow');
+      return nav.classList.contains('navmore-flex') || nav.classList.contains('navmore-flexgrow');
     }
 
     function isNavLeafItem(target) {
@@ -131,7 +135,7 @@
 
     function isOverflowing(lastMainItem) {
       if (isFlex()) {
-        return getAutoClientWidth(lastMainItem) >= lastMainItem.clientWidth;
+        return getAutoClientWidth(lastMainItem) > lastMainItem.clientWidth;
       } else {
         return mainList.scrollWidth > mainList.clientWidth;
       }
@@ -163,6 +167,11 @@
     /* returns array of selected items ordered from leaf (bottom) to root (top) */
     function getSelected() {
       return Array.prototype.slice.call(mainList.querySelectorAll('.selected')).reverse();
+    }
+
+    function setMoreItemText(text) {
+      moreItem.firstChild.textContent = text;
+      reorgNav();
     }
 
     function destroy() {

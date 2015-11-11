@@ -61,13 +61,11 @@
   background-color: rgba(0, 0, 0, .1);
 }
 /* root list */
-.navmore:not(.navmore-flex) > ul,
-.navmore:not(.navmore-flexgrow) > ul {
+.navmore:not(.navmore-flex):not(.navmore-flexgrow) > ul {
   white-space: nowrap;
   overflow: hidden;
 }
-.navmore:not(.navmore-flex) > ul > li,
-.navmore:not(.navmore-flexgrow) > ul > li {
+.navmore:not(.navmore-flex):not(.navmore-flexgrow) > ul > li {
   display: inline-block;
 }
 .navmore.navmore-flex > ul,
