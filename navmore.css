@@ -103,15 +103,13 @@
   position: absolute;
   right: 0;
   left: 0;
+  overflow: auto;
   box-shadow: 0 2px 5px rgba(0,0,0,0.26);
   max-height: 0;
   opacity: 0;
   -webkit-transform: translate3d(0,0,0);
   -webkit-transition: max-height 0.2s ease 0.1s, opacity 0.1s ease 0.1s;
   transition: max-height 0.2s ease 0.1s, opacity 0.1s ease 0.1s;
-}
-.navmore > ul > li > ul {
-  overflow: auto;
 }
 .navmore li > ul li a,
 .navmore li > ul li h1 {
@@ -134,6 +132,9 @@
   .navmore li > ul {
     left: auto;
     right: auto;
+  }
+  .navmore > ul > li > ul ul {
+    overflow: hidden;
   }
   .navmore li ul.navmore-flex {
     display: -ms-flexbox;
