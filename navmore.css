@@ -104,12 +104,14 @@
   right: 0;
   left: 0;
   box-shadow: 0 2px 5px rgba(0,0,0,0.26);
-  overflow: auto;
   max-height: 0;
   opacity: 0;
   -webkit-transform: translate3d(0,0,0);
   -webkit-transition: max-height 0.2s ease 0.1s, opacity 0.1s ease 0.1s;
   transition: max-height 0.2s ease 0.1s, opacity 0.1s ease 0.1s;
+}
+.navmore > ul > li > ul {
+  overflow: auto;
 }
 .navmore li > ul li a,
 .navmore li > ul li h1 {

@@ -7,12 +7,12 @@
  * Copyright pinkhominid
  * Released under MIT License <https://raw.githubusercontent.com/pinkhominid/navmore/master/LICENSE>
  *
- * Chrome/Safari/Firefox/IE10+
+ * Chrome/Firefox/Safari/Opera/Edge/IE11
  *
  * TODO
  * fix msie
  * support keyboard navigation
- * support more nav item tags
+ * support varied nav item tags
  * improve animation
  * calc'ed height of droplist
  * a way to denote items outside of viewport in sub-lists (e.g. gradients)
