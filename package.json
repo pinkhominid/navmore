@@ -1,9 +1,7 @@
 {
   "name": "navmore",
   "version": "2.1.2",
-  "authors": [
-    "pinkhominid <pinkhominid@birdbomb.com>"
-  ],
+  "author": "pinkhominid <pinkhominid@birdbomb.com>",
   "description": "A navigation list decorator that produces a responsive horizontal nav menu.",
   "keywords": [
     "web",
@@ -19,8 +17,16 @@
   "main": "navmore.js",
   "license": "MIT",
   "homepage": "https://github.com/pinkhominid/navmore",
-  "ignore": [
-    "/.*",
-    "/index.html"
-  ]
+  "files": [
+    "*.css",
+    "*.js",
+    "bower.json"
+  ],
+  "scripts": {
+    "version": "npm-bower-sync-ver && git add bower.json",
+    "postversion": "git push --follow-tags && npm publish"
+  },
+  "devDependencies": {
+    "npm-bower-sync-ver": "^1.1.2"
+  }
 }
