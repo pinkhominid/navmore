@@ -19,8 +19,7 @@
   "homepage": "https://github.com/pinkhominid/navmore",
   "files": [
     "*.css",
-    "*.js",
-    "bower.json"
+    "*.js"
   ],
   "scripts": {
     "version": "npm-bower-sync-ver && git add bower.json",
