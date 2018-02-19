@@ -112,6 +112,8 @@
 
         lastMainItem = firstMoreItem;
         firstMoreItem = getFirstMoreItem();
+        // update while removing from moreList in the case More item itself overflows the list
+        updateMoreItemHidden();
       }
       // move items from mainList to moreList
       while (lastMainItem && isOverflowing(lastMainItem)) {
@@ -122,7 +124,6 @@
         updateMoreItemHidden();
       }
       // updates
-      updateMoreItemHidden();
       if (moreList.childElementCount > 0 && selected) {
         // refresh selected
         setSelected(selected);
@@ -242,7 +243,7 @@
       padLeft = parseInt(style.getPropertyValue('padding-left')),
       padRight = parseInt(style.getPropertyValue('padding-right'));
 
-    return Math.round(getTextWidth(text, font.join(' ')) + padLeft + padRight);
+    return Math.floor(getTextWidth(text, font.join(' ')) + padLeft + padRight);
   }
 
   // http://stackoverflow.com/a/21015393
