@@ -32,6 +32,8 @@
     function init() {
       mainList.appendChild(moreItem);
       nav.classList.add('navmore');
+      // add top-level interactive elements to tabindex
+      forEachFirstChildByTagName(mainList, navItemTagNames, addToTabIndex);
 
       // Public API
       nav.navmore = {
@@ -47,6 +49,7 @@
       unthrottleResize = throttle('resize', 'optimizedResize');
       window.addEventListener('optimizedResize', reorgNav, false);
       window.addEventListener('click', handleTap, false);
+      window.addEventListener('keypress', handleKeyPress, false);
 
       /* bootstrap */
       reorgNav();
@@ -72,23 +75,41 @@
       }
 
       var isLeaf = isNavLeafItem(target);
-
       // toggle tapped navItem focus
       if (!isLeaf && isItemFocused(target)) {
         // clear focus for tapped navItem and all descendants
         forEachDescendantsByTagName(target.parentNode, navItemTagNames, blurItem);
+        // remove nested descendants from tabindex
+        removeNestedFromTabIndex(target.parentNode);
         return;
       }
 
       collapse();
+      removeNestedFromTabIndex();
 
       if (isLeaf) {
         setSelected(target);
       } else { // is branch
         // focus ancestor navItems
         forEachAncestorSiblingsByTagName(target, mainList, 'UL', navItemTagNames, focusItem);
+        // if list is nested, add parent list to tabindex
+        var upperLevelList = getClosestAncestorByTagName(target, mainList, 'UL');
+        if(upperLevelList) {
+          forEachFirstChildByTagName(upperLevelList, navItemTagNames, addToTabIndex);
+        }
+        var parentList = getClosestAncestorByTagName(target, mainList, 'LI');
+        // make nested list items selectable via keyboard
+        forEachFirstChildByTagName(parentList.querySelector('ul'), navItemTagNames, addToTabIndex);
         // focus tapped navItem
         focusItem(target);
+      }
+    }
+
+    function handleKeyPress(e) {
+      var key = e.which || e.keyCode;
+      // treat "enter" press like tap
+      if (key === 13) {
+        handleTap(e);
       }
     }
 
@@ -147,6 +168,13 @@
       forEachDescendantsByTagName(mainList, navItemTagNames, blurItem);
     }
 
+    function removeNestedFromTabIndex(target) {
+      // get nested lists, for each nested list, remove links from tabindex
+      forEachDescendantsByTagName(target || mainList, 'UL', function(list){
+        forEachDescendantsByTagName(list, navItemTagNames, removeFromTabIndex);
+      });
+    }
+
     function setSelected(item) {
       // clear selected for all navItems
       forEachDescendantsByTagName(mainList, navItemTagNames, deselectItem);
@@ -184,6 +212,7 @@
       unthrottleResize();
       window.removeEventListener('optimizedResize', reorgNav, false);
       window.removeEventListener('click', handleTap, false);
+      window.removeEventListener('keypress', handleKeyPress, false);
     }
 
     /* BOOTSTRAP */
@@ -283,6 +312,15 @@
     return null;
   }
 
+  function forEachFirstChildByTagName(startNode, tagNames, fn) {
+    var children = startNode.children
+    for (i = 0; i < children.length; i++) {
+      if(hasTagName(children[i].firstElementChild, tagNames)) {
+        fn(children[i].firstElementChild);
+      }
+    }
+  }
+
   function forEachDescendantsByTagName(startNode, tagNames, fn) {
     var descendants = startNode.querySelectorAll(tagNames), i;
     for (i = 0; i < descendants.length; i++) {
@@ -324,6 +362,12 @@
 
   function deselectItem(item) {
     item.classList.remove('selected');
+  }
+  function removeFromTabIndex(item) {
+    item.tabIndex = -1;
+  }
+  function addToTabIndex(item) {
+    item.tabIndex = 0;
   }
 
 })(window);
