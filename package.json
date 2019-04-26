@@ -26,6 +26,6 @@
     "postversion": "git push --follow-tags && npm publish"
   },
   "devDependencies": {
-    "npm-bower-sync-ver": "^1.1.2"
+    "npm-bower-sync-ver": "^2.0.0"
   }
 }
