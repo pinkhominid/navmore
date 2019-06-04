@@ -315,7 +315,7 @@
   function forEachFirstChildByTagName(startNode, tagNames, fn) {
     var children = startNode.children
     for (i = 0; i < children.length; i++) {
-      if(hasTagName(children[i].firstElementChild, tagNames)) {
+      if(children[i].firstElementChild && hasTagName(children[i].firstElementChild, tagNames)) {
         fn(children[i].firstElementChild);
       }
     }
